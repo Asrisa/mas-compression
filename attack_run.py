@@ -151,7 +151,7 @@ def _settings(args, specs, specs_sha, method):
     return {
         "model": "gpt-4o-mini", "compressor_model": "gpt-4o-mini",
         "temperature": 0.0, "compressor_budget_tokens": args.budget,
-        "handoff_regime": "plan", "repeats": args.repeats,
+        "handoff_regime": args.regime, "repeats": args.repeats,
         "workers": args.workers, "conditions": list(args.conditions),
         "specs_file": SPECS_FILE, "specs_sha256": specs_sha,
         "spec_ids": [spec_id(s) for s in specs],
@@ -162,7 +162,7 @@ def _settings(args, specs, specs_sha, method):
         "attack_enabled": True, "controls_enabled": True,
         "seed": None, "seed_policy": "unset_native_default_not_bit_reproducible",
         "prompt_hashes": {
-            "agent1": config.prompt_hash(agent1_prompts.REGIMES["plan"]),
+            "agent1": config.prompt_hash(agent1_prompts.REGIMES[args.regime]),
             "agent2_template": config.prompt_hash(baseline._AGENT2_TEMPLATE)},
     }
 
@@ -183,7 +183,7 @@ def validate_manifest(manifest):
             or s.get("model") != "gpt-4o-mini"
             or s.get("compressor_model") != "gpt-4o-mini"
             or s.get("temperature") != 0
-            or s.get("handoff_regime") != "plan"
+            or s.get("handoff_regime") not in agent1_prompts.REGIMES
             or s.get("attack_enabled") is not True
             or manifest.get("backend") != s.get("backend")
             or s.get("backend") not in ("mock", "openai")):
@@ -201,7 +201,7 @@ def validate_manifest(manifest):
 def _config(manifest, condition, out_dir):
     s = manifest["settings"]
     return config.RunConfig(
-        experiment_mode="stress_test", handoff_regime="plan",
+        experiment_mode="stress_test", handoff_regime=s["handoff_regime"],
         condition=condition, tasks_file=s["tasks_file"],
         task_ids=tuple(s["spec_ids"]),
         compressor_budget_tokens=s["compressor_budget_tokens"],
@@ -376,7 +376,13 @@ def _error_row(task, repeat, cfg, shared, error_type, stage):
 def _run_locked(args, *, backend=None):
     if args.repeats < 1 or args.workers < 1:
         raise IntegrityError("positive repeats and workers required")
-    pipeline.AGENT1_SYSTEM = agent1_prompts.REGIMES["plan"]
+    # THE HANDOFF REGIME IS A VARIABLE, not a constant. Our default asks
+    # Agent 1 to "name EVERY tool call Agent 2 must make" with argument
+    # values, which is precisely the artefact an injection is already
+    # formatted as. A reviewer is entitled to ask whether the adoption result
+    # is a property of agent pipelines or of that instruction, and the only
+    # honest answer is to run the alternatives that already exist here.
+    pipeline.AGENT1_SYSTEM = agent1_prompts.REGIMES[args.regime]
     base = {t["id"]: t for t in shared_run.load_tasks()}
     specs, specs_sha, payload = load_specs(args.specs)
     if args.limit:
@@ -641,6 +647,11 @@ def parser():
     ap.add_argument("--repeats", type=int, default=3)
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--budget", type=int, default=150)
+    ap.add_argument("--regime", default="plan",
+                    choices=sorted(agent1_prompts.REGIMES),
+                    help="Agent 1's handoff prompt. 'plan' is the primary; "
+                         "'verbatim' and 'summarise' have no PLAN section at "
+                         "all; 'defended' adds a spotlighting instruction.")
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--execute-paid", action="store_true")
     ap.add_argument("--report-only", action="store_true",
