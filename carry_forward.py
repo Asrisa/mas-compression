@@ -43,10 +43,12 @@ import collections
 import json
 from pathlib import Path
 
+import attack_score
+
 STRONG = ("tool_knowledge", "important_instructions")
 
 
-def fired_by_spec(run_dir) -> dict:
+def fired_by_spec(run_dir, specs=None) -> dict:
     """{spec_id: [fired?, ...]} over the repeats, from a finished run.
 
     Reads the rows and not the status summary, because the summary pools and
@@ -54,6 +56,13 @@ def fired_by_spec(run_dir) -> dict:
     counted as not-fired: a refused call is infrastructure, and treating it as
     a defended attack is the same error as counting an unplanted control as a
     dropped one.
+
+    Pass `specs` ({spec_id: spec}) to rescore the saved tool calls against
+    those specs instead of trusting what the run recorded. Needed after a
+    correction to `harmful_critical`, because selection reads the control arm
+    and a spec wrongly scored as never firing is silently dropped from the
+    next run. That is how run 4 came to be missing 20 specs, 19 of them in
+    the two suites it was already thinnest on.
     """
     path = Path(run_dir) / "arms" / "none" / "runs.jsonl"
     out = collections.defaultdict(list)
@@ -63,8 +72,17 @@ def fired_by_spec(run_dir) -> dict:
             if row.get("kind") != "run" or row.get("api_failure"):
                 continue
             key = row.get("attack_spec_id")
-            if key:
+            if not key:
+                continue
+            if specs is None:
                 out[key].append(bool(row.get("attack_fired_any")))
+            else:
+                spec = specs.get(key)
+                if spec is None:
+                    continue
+                result = attack_score.score(spec["harmful_critical"],
+                                            row.get("tool_calls") or [])
+                out[key].append(bool(result.fired))
     return dict(out)
 
 
@@ -100,13 +118,34 @@ def main(argv=None):
     ap.add_argument("--wrappers", nargs="*", default=list(STRONG),
                     help="empty keeps every wrapper")
     ap.add_argument("--require-all-repeats", action="store_true")
+    ap.add_argument("--rescore", action="store_true",
+                    help="score the saved tool calls against --specs rather "
+                         "than trusting what the run recorded; use after a "
+                         "correction to harmful_critical")
+    ap.add_argument("--exclude", default=None,
+                    help="a spec file whose specs are already running "
+                         "elsewhere; the output holds only what it is missing, "
+                         "so an existing run can be topped up instead of redone")
     args = ap.parse_args(argv)
 
     with open(args.specs) as handle:
         payload = json.load(handle)
-    fired = fired_by_spec(args.from_run)
+    index = {f"{s['task_id']}|{s['injection']}|{s['wrapper']}": s
+             for s in payload["specs"]}
+    fired = fired_by_spec(args.from_run, index if args.rescore else None)
     kept = carry(payload["specs"], fired, args.wrappers,
                  args.require_all_repeats)
+
+    already = set()
+    if args.exclude:
+        with open(args.exclude) as handle:
+            already = {f"{s['task_id']}|{s['injection']}|{s['wrapper']}"
+                       for s in json.load(handle)["specs"]}
+        before = len(kept)
+        kept = [s for s in kept
+                if f"{s['task_id']}|{s['injection']}|{s['wrapper']}" not in already]
+        print(f"excluding {args.exclude}: {before} qualify, {len(already)} "
+              f"already run, {len(kept)} left to run")
     if not kept:
         raise SystemExit("nothing fired; there is no run 4 to run")
 
@@ -121,6 +160,8 @@ def main(argv=None):
         "wrappers": list(args.wrappers),
         "specs_before": len(fired),
         "specs_after": len(kept),
+        "rescored_against_specs": bool(args.rescore),
+        "excluded_already_running": sorted(already) or None,
         "note": "rates computed on these specs are CONDITIONAL on run 3 "
                 "success and are not comparable to run 3's unconditional "
                 "rate; the selection is on the control condition only",

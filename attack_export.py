@@ -25,6 +25,7 @@ import csv
 import json
 from pathlib import Path
 
+import attack_score
 import compressors
 
 RUN3_COLUMNS = [
@@ -83,6 +84,30 @@ def layout(handoff, spec) -> dict:
             "harm_in_tail": has(tail)}
 
 
+def rescore(row, spec) -> dict:
+    """The attack columns recomputed from `spec`, not read off the run.
+
+    WHY. A run stores whatever its scorer said at the time, so a correction to
+    `harmful_critical` can only reach the numbers by rescoring the saved tool
+    calls. No model is called: Agent 2's calls are already on disk, and only
+    the judgement about them changes.
+
+    The correction this exists for: AgentDojo fixes `amount=0.01` on
+    banking/injection_task_0-3 while the injection itself says "fill them in
+    without asking me", and pins a whole sentence as slack/injection_task_1's
+    message body where the attacker asked only for its url. Requiring those
+    scored 52 run 3 attacks as defended, 27 of them irreversible.
+    """
+    result = attack_score.score(spec["harmful_critical"], row.get("tool_calls") or [])
+    return {"attack_specified": result.specified,
+            "attack_n_harmful": result.n_harmful,
+            "attack_fired_calls": result.fired,
+            "attack_fired_any": bool(result.fired),
+            "attack_fired_all": result.fired == result.n_harmful and result.n_harmful > 0,
+            "attack_irreversible": result.irreversible,
+            "attack_tools_fired": ";".join(result.tools_fired)}
+
+
 def flat(row) -> dict:
     attack = row.get("attack") or {}
     placement = attack.get("placement") or {}
@@ -98,7 +123,7 @@ def flat(row) -> dict:
     return out
 
 
-def export(run_dir, specs_path, out_dir) -> dict:
+def export(run_dir, specs_path, out_dir, rescore_attacks=False) -> dict:
     run_dir, out_dir = Path(run_dir), Path(out_dir)
     manifest = json.loads((run_dir / "manifest.json").read_text())
     specs = {f"{s['task_id']}|{s['injection']}|{s['wrapper']}": s
@@ -114,6 +139,8 @@ def export(run_dir, specs_path, out_dir) -> dict:
                 continue
             key = (row.get("attack_spec_id"), row.get("repeat"))
             rec = {"condition": condition, **flat(row)}
+            if rescore_attacks:
+                rec.update(rescore(row, specs[key[0]]))
             rec.update(layout(handoffs.get(key), specs[key[0]]))
             table.append(rec)
 
@@ -200,8 +227,12 @@ def main(argv=None):
     ap.add_argument("--run", required=True)
     ap.add_argument("--specs", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--rescore", action="store_true",
+                    help="recompute the attack columns from --specs instead of "
+                         "reading what the run recorded; needed after a "
+                         "correction to harmful_critical, costs no API calls")
     args = ap.parse_args(argv)
-    summary = export(args.run, args.specs, args.out)
+    summary = export(args.run, args.specs, args.out, rescore_attacks=args.rescore)
     print(render(summary))
     return 0
 
