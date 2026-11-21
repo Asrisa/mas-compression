@@ -51,11 +51,11 @@ And the safety rule C is the worst treated content in every arm, around half the
 
 **The deadline is 20 November.** Twelve days, and nobody has been working to a date, so here's what I need.
 
-**Yibo:** two things. The head keeping sliding window arm, one line in `compressors.py`, then rerun just that arm, 291 trials, because right now that result is uninterpretable. Then paired confidence intervals over `results/run4_analysis/trials.csv` using your `analysis_stats.py`, on the trade column, since the arms share Agent 1 and paired tests are much stronger than comparing groups.
+**a co-author:** two things. The head keeping sliding window arm, one line in `compressors.py`, then rerun just that arm, 291 trials, because right now that result is uninterpretable. Then paired confidence intervals over `results/run4_analysis/trials.csv` using your `analysis_stats.py`, on the trade column, since the arms share Agent 1 and paired tests are much stronger than comparing groups.
 
-**Tanmay:** failure taxonomy over run 4, per arm. What I most want to know is why `allowlist` and `sliding_window` destroy the task. Run 2 said "no action" and I want that confirmed here rather than assumed. `trials.csv` has all 1,746 rows with every factor.
+**a co-author:** failure taxonomy over run 4, per arm. What I most want to know is why `allowlist` and `sliding_window` destroy the task. Run 2 said "no action" and I want that confirmed here rather than assumed. `trials.csv` has all 1,746 rows with every factor.
 
-**Sourayan:** related work, and it's the biggest unowned block. Destination specific compression is now the paper's positive result and it was your direction, so the literature around it is the natural piece for you. The attack specs are done and committed so you're not needed there.
+**a co-author:** related work, and it's the biggest unowned block. Destination specific compression is now the paper's positive result and it was your direction, so the literature around it is the natural piece for you. The attack specs are done and committed so you're not needed there.
 
 **Me:** methods section, and a text level attack measurement so we can compare attack survival against N2 survival on the same footing.
 

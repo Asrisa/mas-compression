@@ -5,8 +5,8 @@ It runs one task through a two-agent pipeline, compresses the handoff between
 them under different conditions, and measures whether an injected attack
 survives compression and causes the second agent to take a harmful action.
 
-This is Yibo's piece (the "multi-agent pipeline for evaluations"). Asra's tasks
-and Sourayan's injections plug into it.
+This is a co-author's piece (the "multi-agent pipeline for evaluations"). the first author's tasks
+and a co-author's injections plug into it.
 
 ## What it does, in one picture
 
@@ -84,7 +84,7 @@ The pilot (`DEFAULT_CONDITIONS`) runs `none`, `unconditional`,
 `instruction_strip`, `allowlist` — the floor, the control, and the two most
 interesting cases.
 
-## Task format (what Asra produces)
+## Task format (what the first author produces)
 
 One JSON object per task. See `tasks/sample_tasks.json`.
 

@@ -3,7 +3,7 @@
   "design": "shared-handoff-primary",
   "data_kind": "backend_unverified_from_upstream_metadata",
   "shared_upstream": {
-    "root": "/Users/yiboyang/Desktop/algoverse-mas-compression/results/run2/run2_primary",
+    "root": "/path/to/repo/results/run2/run2_primary",
     "manifest_sha256": "7ab97b320f9b9c0357dd3ca52b5f411446b2dabe2dd639eb31506bb5e47cb790",
     "handoffs_sha256": "8ecbaab2ce1f06c3c0c4866e28c9629c063ae2e3ea15bb354f52508d83d0794f",
     "upstream_calls_sha256": "ba2ef7693b0c6e26ef9d1604c9cd9e509bef3e990ddf4f2c8f352f05d5a2839c",
@@ -67031,7 +67031,7 @@
   },
   "baseline_available": true,
   "provenance": {
-    "analysis_tasks_path": "/Users/yiboyang/Desktop/algoverse-mas-compression/tasks/sample_tasks_63.json",
+    "analysis_tasks_path": "/path/to/repo/tasks/sample_tasks_63.json",
     "analysis_tasks_sha256": "eb78f48f100b05c3277bb748a5a8e78e81981bfe00532063e570ee4d99090eed",
     "analysis_dataset_task_count": 63,
     "analysis_code_sha256": {
@@ -67054,7 +67054,7 @@
     "config_serialization": "nonfinite upstream CER bounds are represented as strings; input hashes preserve exact original bytes",
     "runs": [
       {
-        "path": "/Users/yiboyang/Desktop/algoverse-mas-compression/results/run2/run2_primary/arms/none",
+        "path": "/path/to/repo/results/run2/run2_primary/arms/none",
         "config": {
           "attack_enabled": false,
           "backend": "openai",
@@ -67102,7 +67102,7 @@
           "handoff_regime": "plan",
           "manifest_sha256": "267f62cc377d5a978a5c2e499bcd46f9ccbc075ddfdf50d3a7c3e58c3e32505c",
           "model": "gpt-4o-mini",
-          "output_dir": "/Users/yiboyang/Desktop/algoverse-mas-compression/results/run2/run2_primary/arms",
+          "output_dir": "/path/to/repo/results/run2/run2_primary/arms",
           "primary_cer_min": 1.5,
           "prompt_hashes": {
             "agent1": "0dd82941f7cb",
@@ -67203,7 +67203,7 @@
         "orphan_calls": []
       },
       {
-        "path": "/Users/yiboyang/Desktop/algoverse-mas-compression/results/run2/run2_primary/arms/sliding_window",
+        "path": "/path/to/repo/results/run2/run2_primary/arms/sliding_window",
         "config": {
           "attack_enabled": false,
           "backend": "openai",
@@ -67251,7 +67251,7 @@
           "handoff_regime": "plan",
           "manifest_sha256": "267f62cc377d5a978a5c2e499bcd46f9ccbc075ddfdf50d3a7c3e58c3e32505c",
           "model": "gpt-4o-mini",
-          "output_dir": "/Users/yiboyang/Desktop/algoverse-mas-compression/results/run2/run2_primary/arms",
+          "output_dir": "/path/to/repo/results/run2/run2_primary/arms",
           "primary_cer_min": 1.5,
           "prompt_hashes": {
             "agent1": "0dd82941f7cb",
@@ -67352,7 +67352,7 @@
         "orphan_calls": []
       },
       {
-        "path": "/Users/yiboyang/Desktop/algoverse-mas-compression/results/run2/run2_primary/arms/unconditional",
+        "path": "/path/to/repo/results/run2/run2_primary/arms/unconditional",
         "config": {
           "attack_enabled": false,
           "backend": "openai",
@@ -67400,7 +67400,7 @@
           "handoff_regime": "plan",
           "manifest_sha256": "267f62cc377d5a978a5c2e499bcd46f9ccbc075ddfdf50d3a7c3e58c3e32505c",
           "model": "gpt-4o-mini",
-          "output_dir": "/Users/yiboyang/Desktop/algoverse-mas-compression/results/run2/run2_primary/arms",
+          "output_dir": "/path/to/repo/results/run2/run2_primary/arms",
           "primary_cer_min": 1.5,
           "prompt_hashes": {
             "agent1": "0dd82941f7cb",
@@ -67501,7 +67501,7 @@
         "orphan_calls": []
       },
       {
-        "path": "/Users/yiboyang/Desktop/algoverse-mas-compression/results/run2/run2_primary/arms/destination",
+        "path": "/path/to/repo/results/run2/run2_primary/arms/destination",
         "config": {
           "attack_enabled": false,
           "backend": "openai",
@@ -67549,7 +67549,7 @@
           "handoff_regime": "plan",
           "manifest_sha256": "267f62cc377d5a978a5c2e499bcd46f9ccbc075ddfdf50d3a7c3e58c3e32505c",
           "model": "gpt-4o-mini",
-          "output_dir": "/Users/yiboyang/Desktop/algoverse-mas-compression/results/run2/run2_primary/arms",
+          "output_dir": "/path/to/repo/results/run2/run2_primary/arms",
           "primary_cer_min": 1.5,
           "prompt_hashes": {
             "agent1": "0dd82941f7cb",
@@ -67650,7 +67650,7 @@
         "orphan_calls": []
       },
       {
-        "path": "/Users/yiboyang/Desktop/algoverse-mas-compression/results/run2/run2_primary/arms/instruction_strip",
+        "path": "/path/to/repo/results/run2/run2_primary/arms/instruction_strip",
         "config": {
           "attack_enabled": false,
           "backend": "openai",
@@ -67698,7 +67698,7 @@
           "handoff_regime": "plan",
           "manifest_sha256": "267f62cc377d5a978a5c2e499bcd46f9ccbc075ddfdf50d3a7c3e58c3e32505c",
           "model": "gpt-4o-mini",
-          "output_dir": "/Users/yiboyang/Desktop/algoverse-mas-compression/results/run2/run2_primary/arms",
+          "output_dir": "/path/to/repo/results/run2/run2_primary/arms",
           "primary_cer_min": 1.5,
           "prompt_hashes": {
             "agent1": "0dd82941f7cb",
@@ -67799,7 +67799,7 @@
         "orphan_calls": []
       },
       {
-        "path": "/Users/yiboyang/Desktop/algoverse-mas-compression/results/run2/run2_primary/arms/allowlist",
+        "path": "/path/to/repo/results/run2/run2_primary/arms/allowlist",
         "config": {
           "attack_enabled": false,
           "backend": "openai",
@@ -67847,7 +67847,7 @@
           "handoff_regime": "plan",
           "manifest_sha256": "267f62cc377d5a978a5c2e499bcd46f9ccbc075ddfdf50d3a7c3e58c3e32505c",
           "model": "gpt-4o-mini",
-          "output_dir": "/Users/yiboyang/Desktop/algoverse-mas-compression/results/run2/run2_primary/arms",
+          "output_dir": "/path/to/repo/results/run2/run2_primary/arms",
           "primary_cer_min": 1.5,
           "prompt_hashes": {
             "agent1": "0dd82941f7cb",

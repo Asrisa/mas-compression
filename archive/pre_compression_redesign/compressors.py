@@ -5,7 +5,7 @@ Each condition takes agent 1's handoff text and returns a shorter version, which
 is all agent 2 gets to see. This is the thing under test. The whole paper is:
 does compressing the handoff keep the attack, hide it, or remove it?
 
-Conditions (from Asra's semantic-arm design + the controls):
+Conditions (from the first author's semantic-arm design + the controls):
 
   none            - no compression. The FLOOR. Handoff passed through as-is.
   sliding_window  - keep the last N chars. Structural baseline, no model.

@@ -1,7 +1,7 @@
 """
 Adapter: AgentDojo-backed benign tasks  ->  the team harness schema.
 
-The harness (algoverse-mas-compression) already has the pipeline, the six
+The harness (mas-compression) already has the pipeline, the six
 compressors and a log-based scorer. What it is missing is content: its sample
 documents are about 50 tokens, so there is nothing for a compressor to act on.
 

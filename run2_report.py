@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Run 2 readout: the two things Asra asked for, from a shared_run.py output dir.
+Run 2 readout: the two things the first author asked for, from a shared_run.py output dir.
 
     python3 run2_report.py --shared-run runs/run2_primary
 

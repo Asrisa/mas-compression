@@ -205,7 +205,7 @@ SCOPED = (
 # genuinely Agent 1's and nobody else's:
 #
 #   which tools to call      needs the task
-#   what the action should be  this is the delegation Yibo found was missing,
+#   what the action should be  this is the delegation a co-author found was missing,
 #                            and it is why Agent 2 stopped having to guess
 #   values that must be computed   the rent rise, the VAT, half the dinner
 #                            bill. Five banking tasks turn on a number written

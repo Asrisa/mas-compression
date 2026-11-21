@@ -1,6 +1,6 @@
 # Runs 3 and 4: the attack arm
 
-**8 November 2026 · Asra Asif · workshop deadline 20 November**
+**8 November 2026 · the first author · workshop deadline 20 November**
 
 Most handoff compression is a bad security trade: it removes injected attacks
 at roughly the price of the task itself. Destination-specific compression is
@@ -216,10 +216,10 @@ text is already in the traces, and would let us make the stronger claim.
 
 | Owner | Task | Why it blocks |
 | --- | --- | --- |
-| Yibo | Head-keeping `sliding_window` arm, one line in `compressors.py`, rerun that arm only, 291 trials | That column is uninterpretable until it exists |
-| Yibo | Paired confidence intervals over `run4_analysis/trials.csv` with `analysis_stats.py`, on the trade column | Arms share Agent 1, so paired tests are available and much stronger |
-| Tanmay | Failure taxonomy over run 4, per arm | Need to know why `allowlist` and `sliding_window` destroy the task, not assume it |
-| Sourayan | Related work | Biggest unowned block; destination-specific compression is now the positive result |
-| Asra | Methods section, text-level attack measurement | Lets attack survival and N2 survival be compared on one footing |
-| Asra | Decide: lead with 63 tasks or the 51 reliable ones | Has to be decided once, not per table |
-| Asra | Author list | Gets harder the longer it waits |
+| a co-author | Head-keeping `sliding_window` arm, one line in `compressors.py`, rerun that arm only, 291 trials | That column is uninterpretable until it exists |
+| a co-author | Paired confidence intervals over `run4_analysis/trials.csv` with `analysis_stats.py`, on the trade column | Arms share Agent 1, so paired tests are available and much stronger |
+| a co-author | Failure taxonomy over run 4, per arm | Need to know why `allowlist` and `sliding_window` destroy the task, not assume it |
+| a co-author | Related work | Biggest unowned block; destination-specific compression is now the positive result |
+| the first author | Methods section, text-level attack measurement | Lets attack survival and N2 survival be compared on one footing |
+| the first author | Decide: lead with 63 tasks or the 51 reliable ones | Has to be decided once, not per table |
+| the first author | Author list | Gets harder the longer it waits |

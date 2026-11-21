@@ -189,7 +189,7 @@ class AllowedToolsCoversTheAnswer(unittest.TestCase):
     our own metadata being wrong.
 
     It was [final_write_tool], right for a one-call task and silently wrong
-    for the 22 that need more. Eight tasks were affected and Tanmay found it
+    for the 22 that need more. Eight tasks were affected and a co-author found it
     in review, not us. Over the whole 63-task set, both files.
     """
 

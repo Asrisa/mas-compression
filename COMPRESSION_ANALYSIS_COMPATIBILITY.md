@@ -1,8 +1,8 @@
 # Shared-handoff primary design: compatibility and review report
 
-This revision incorporates Asra's feedback into PR #5. The primary comparison now generates **one Agent 1 draw per task/repeat and reuses its exact raw reply and handoff across all six conditions**. Historical independent sampling remains available through the team's original runner and an explicit legacy analysis option. No paid experiments were run; every supplied validation result is **mock, non-empirical**.
+This revision incorporates the first author's feedback into PR #5. The primary comparison now generates **one Agent 1 draw per task/repeat and reuses its exact raw reply and handoff across all six conditions**. Historical independent sampling remains available through the team's original runner and an explicit legacy analysis option. No paid experiments were run; every supplied validation result is **mock, non-empirical**.
 
-The comparison is against PR [4](https://github.com/yiboyang-sas/algoverse-mas-compression/pull/4) at `b6c5eb66d3380aa5bd1613fc5caff0673bd151a8` and the team's live **`compression-redesign`** branch at `52958c146d849aa60f50d9c3a78d4e54ecd6f474` (hyphenated remote name). This revision supersedes PR #5's earlier independent-only analysis and removes its duplicate field-retention implementation and tests.
+The comparison is against PR [4](https://github.com/anonymous/mas-compression/pull/4) at `b6c5eb66d3380aa5bd1613fc5caff0673bd151a8` and the team's live **`compression-redesign`** branch at `52958c146d849aa60f50d9c3a78d4e54ecd6f474` (hyphenated remote name). This revision supersedes PR #5's earlier independent-only analysis and removes its duplicate field-retention implementation and tests.
 
 ## What is preserved and what is added
 
@@ -60,7 +60,7 @@ For each common scored task/repeat/handoff, the analyzer reports treatment minus
 
 All 15 pairwise contrasts are exported. The five contrasts against `none` are marked primary; comparisons among compressors are descriptive. Per-task outputs retain repeat outcomes, failed repeat indices, discordance, and improved-only/regressed-only/mixed/concordant patterns. Estimates, coverage, configurations and input/code hashes are saved in `analysis.json`; unaltered scores/metrics in `trials.csv`; exclusive profiles and native annotations in `diagnostics.jsonl`; a concise table in `report.md`.
 
-**Recommendation: shared handoffs are the primary design**, as requested by Asra. They control Agent 1 variability even at temperature 0, making within-handoff compression comparisons interpretable. Independent end-to-end sampling answers a different question about the whole pipeline including new upstream draws; it remains a secondary sensitivity analysis and is explicitly labelled `legacy-independent`. Matching its repeat labels alone cannot isolate compression. The fixed native condition order completes the baseline first; shared handoffs do not control downstream time/order effects or provider drift. Neither design guarantees deterministic model inference. Seeds are recorded only where supported, not claimed as determinism.
+**Recommendation: shared handoffs are the primary design**, as requested by the first author. They control Agent 1 variability even at temperature 0, making within-handoff compression comparisons interpretable. Independent end-to-end sampling answers a different question about the whole pipeline including new upstream draws; it remains a secondary sensitivity analysis and is explicitly labelled `legacy-independent`. Matching its repeat labels alone cannot isolate compression. The fixed native condition order completes the baseline first; shared handoffs do not control downstream time/order effects or provider drift. Neither design guarantees deterministic model inference. Seeds are recorded only where supported, not claimed as determinism.
 
 The 63 benchmark items are a fixed, heterogeneous sample. Repeats are not independent tasks, uniform mock outcomes can yield degenerate intervals, all contrasts are exploratory without multiplicity-adjusted significance claims, and post-treatment retention strata should not be used as a newly selected primary cohort. Shared handoffs isolate upstream sampling, not semantic mediation. No compression benefit/harm or paper result is established by offline fixtures.
 
@@ -73,24 +73,24 @@ PYTHONDONTWRITEBYTECODE=1 MAS_BACKEND=mock python3 -S run_tests.py
 
 # Small six-condition smoke, three shared draws (one task x three repeats).
 PYTHONDONTWRITEBYTECODE=1 python3 -S shared_run.py \
-  --out-dir /tmp/algoverse-shared-smoke --limit 1
+  --out-dir /tmp/the-program-shared-smoke --limit 1
 python3 -S analyze_redesign.py \
-  --shared-run /tmp/algoverse-shared-smoke \
-  --tasks tasks/sample_tasks_63.json --out-dir /tmp/algoverse-shared-smoke-analysis \
+  --shared-run /tmp/the-program-shared-smoke \
+  --tasks tasks/sample_tasks_63.json --out-dir /tmp/the-program-shared-smoke-analysis \
   --bootstrap-draws 2000 --seed 1729
 
 # Full offline bookkeeping validation: 189 A1 draws and 1,134 arm outcomes.
 PYTHONDONTWRITEBYTECODE=1 python3 -S shared_run.py \
-  --out-dir /tmp/algoverse-shared-mock --repeats 3
+  --out-dir /tmp/the-program-shared-mock --repeats 3
 python3 -S analyze_redesign.py \
-  --shared-run /tmp/algoverse-shared-mock \
-  --tasks tasks/sample_tasks_63.json --out-dir /tmp/algoverse-shared-mock-analysis \
+  --shared-run /tmp/the-program-shared-mock \
+  --tasks tasks/sample_tasks_63.json --out-dir /tmp/the-program-shared-mock-analysis \
   --bootstrap-draws 2000 --seed 1729
 
 # Historical independent sampling: explicit non-primary opt-in.
 python3 -S analyze_redesign.py --legacy-independent \
   PATH_TO_NONE_RUN PATH_TO_COMPRESSION_RUN \
-  --tasks tasks/sample_tasks_63.json --out-dir /tmp/algoverse-legacy-analysis
+  --tasks tasks/sample_tasks_63.json --out-dir /tmp/the-program-legacy-analysis
 ```
 
 Shared mock manifests automatically label analysis as non-empirical. Use `--fixture` for authored historical fixtures; legacy metadata alone cannot verify a real backend. Re-running a shared runner command resumes the same experiment after integrity checks; analysis output directories must be fresh and empty.
