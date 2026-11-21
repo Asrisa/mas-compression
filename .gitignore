@@ -29,3 +29,6 @@ results/run4_topup_dry/
 results/_to_delete_run4_topup_dry/
 results/*.lock
 results/.*.lock
+
+paper/
+REDESIGN_PLAN.md

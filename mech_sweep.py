@@ -72,7 +72,7 @@ def oracle_handoff(task, wide=False):
     `wide=True` restores the earlier version, where PLAN restated every
     required value. Kept so the two can be run as arms: the gap between them
     is how much a planning step decides on its own, which is the same question
-    Yibo raised about delegation, answered with a number.
+    a collaborator raised about delegation, answered with a number.
     """
     final = task["required_calls"][-1]
     crit = task.get("handoff_critical") or {}
